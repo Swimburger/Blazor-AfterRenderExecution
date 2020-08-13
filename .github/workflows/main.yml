@@ -20,6 +20,7 @@ jobs:
     - name: .NET Publish
       run: |
         dotnet publish AfterRenderExecution.csproj -c Release --nologo -p:PublishTrimmed=true -o release
+        sed -i 's/<base href="\/" \/>/<base href="\/Blazor-AfterRenderExecution\/" \/>/g' release/wwwroot/index.html
 
     - name: Commit to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@3.5.9

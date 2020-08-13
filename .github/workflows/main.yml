@@ -21,7 +21,7 @@ jobs:
       run: |
         dotnet publish AfterRenderExecution.csproj -c Release --nologo -p:PublishTrimmed=true -o release
 
-    - name: Deploy 🚀
+    - name: Commit to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@3.5.9
       with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

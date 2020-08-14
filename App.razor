@@ -1,3 +1,4 @@
+@inherits MyComponentBase
 @inject IJSRuntime JSRuntime
 <button type="button" @onclick="GenerateMoreLoremIpsum">Generate more Lorem Ipsum</button>
 @foreach (var paragraph in loremParagraphs)
@@ -7,8 +8,6 @@
 
 @code {
     private List<string> loremParagraphs = new List<string>();
-    // store all the actions you want to run **once** after rendering
-    private List<Action> actionsToRunAfterRender = new List<Action>();
 
     protected override Task OnInitializedAsync()
     {
@@ -19,23 +18,11 @@
         return base.OnInitializedAsync();
     }
 
-    protected override Task OnAfterRenderAsync(bool firstRender)
-    {
-        // run all the actions (.NET code) **once** after rendering
-        foreach (var actionToRun in actionsToRunAfterRender)
-        {
-            actionToRun();
-        }
-        // clear the actions to make sure the actions only run **once**
-        actionsToRunAfterRender.Clear();
-        return base.OnAfterRenderAsync(firstRender);
-    }
-
     private void GenerateMoreLoremIpsum()
     {
         loremParagraphs.Add(GetRandomLoremParagraph());
         // pass action to actionsToRunAfterRender to run the scrollToParagraph code **once** after the new paragraph is rendered
-        actionsToRunAfterRender.Add(() => JSRuntime.InvokeVoidAsync("scrollToParagraph", loremParagraphs.Count - 1));
+        RunAfterRender(() => JSRuntime.InvokeVoidAsync("scrollToParagraph", loremParagraphs.Count - 1));
     }
 
     private static Random random = new Random();
